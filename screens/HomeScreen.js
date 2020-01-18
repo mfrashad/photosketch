@@ -1,6 +1,8 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import { FloatingAction } from "react-native-floating-action";
+import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 const DATA = [
@@ -17,6 +19,7 @@ const DATA = [
     title: 'Third Game',
   },
 ];
+
 
 function Item({ title }) {
   return (
@@ -35,6 +38,12 @@ export default function HomeScreen() {
         data={DATA}
         renderItem={({ item }) => <Item title={item.title} />}
         keyExtractor={item => item.id}
+      />
+      <FloatingAction
+        color="#FFF"
+        onPress={() => alert("Test") }
+        shadowStyle={styles.fabShadow}
+        fixNativeFeedbackRadius={true}
       />
     </SafeAreaView>
   );
@@ -76,4 +85,14 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginVertical: 20
   },
+  fabShadow: {
+    shadowOpacity: 0.35,
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowColor: '#000',
+    shadowRadius: 3,
+    elevation: 5,
+  }
 });
