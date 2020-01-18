@@ -5310,6 +5310,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-floating-action@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/react-native-floating-action/-/react-native-floating-action-1.20.0.tgz#65a975669e30b16900e095ec1a2448e4ce377869"
+  integrity sha512-FQi4HkfPBXIyb/cT300v54j1FChZ78K2QVlzY4TKlUDIimRmKJ9P5ie79NBvtKv9wTXXT6+Y0XVXFfOX4zuIwQ==
+
 react-native-gesture-handler@~1.5.0:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.3.tgz#191b44701fab7ba54c27a2438cb5eaa252666e66"
