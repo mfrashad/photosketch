@@ -20,6 +20,15 @@ const DATA = [
   },
 ];
 
+const actions = [
+  {
+    text: "Create New Game",
+    icon: require("../assets/images/icon.png"),
+    name: "imagePicker",
+    position: 1
+  }
+];
+
 
 function Item({ title }) {
   return (
@@ -30,23 +39,27 @@ function Item({ title }) {
   );
 }
 
-export default function HomeScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}> My Games </Text>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <Item title={item.title} />}
-        keyExtractor={item => item.id}
-      />
-      <FloatingAction
-        color="#FFF"
-        onPress={() => alert("Test") }
-        shadowStyle={styles.fabShadow}
-        fixNativeFeedbackRadius={true}
-      />
-    </SafeAreaView>
-  );
+export default class HomeScreen extends React.Component {
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}> My Games </Text>
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => <Item title={item.title} />}
+          keyExtractor={item => item.id}
+        />
+        <FloatingAction
+          actions={actions}
+          onPressItem={(name) => this.props.navigation.navigate('ImagePicker')}
+          overrideWithAction={true}
+          color="#FFF"
+          shadowStyle={styles.fabShadow}
+          fixNativeFeedbackRadius={true}
+        />
+      </SafeAreaView>
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
