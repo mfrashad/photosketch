@@ -31,6 +31,9 @@ export default (world, x, y) => {
   let body = Matter.Bodies.rectangle(x, y, width, height, {
       label: "player",
       density: 0.01,
+      restitution: 0,
+      friction: 0.9,
+      frictionAir: 0.01,
   });
   Matter.World.add(world, [body]);
   return {

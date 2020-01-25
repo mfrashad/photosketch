@@ -25,8 +25,10 @@ export class Renderer extends Component {
 
 export default (world, x, y , width, height) => {
   let body = Matter.Bodies.rectangle(x, y, width, height, {
-    isStatic: true,
     label: "wall",
+    isStatic: true,
+    friction: 1,
+    restitution: 0,
   });
   Matter.World.add(world, [body]);
   return {
