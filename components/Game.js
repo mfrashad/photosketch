@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar} from 'react-native';
+import { StyleSheet, View, StatusBar, TouchableOpacity, Text} from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Player from './Player';
@@ -7,6 +7,7 @@ import Enemy from './Enemy';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
+import { enumBooleanBody } from '@babel/types';
 
 
 export default class Game extends Component {
@@ -71,28 +72,123 @@ export default class Game extends Component {
     });
   }
 
+  pauseHandler = () => {
+    console.log("Paused")
+    this.setState(prevState => ({
+      running: !prevState.running
+    }))
+  }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <GameEngine
-                    ref={(ref) => { this.gameEngine = ref; }}
-                    style={styles.gameContainer}
-                    running={this.state.running}
-                    onEvent={this.onEvent}
-                    systems={[Physics]}
-                    entities={this.entities}>
-                    <StatusBar hidden={true} />
-                </GameEngine>
+  jumpHandler = () => {
+    console.log("Jump")
+    let player = this.entities.player.body;
+    Matter.Body.setVelocity( player, {x: 10, y: 10});
+  }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+        
+        <GameEngine
+          ref={(ref) => { this.gameEngine = ref; }}
+          style={styles.gameContainer}
+          running={this.state.running}
+          onEvent={this.onEvent}
+          systems={[Physics]}
+          entities={this.entities}>
+          <StatusBar hidden={true} />
+        </GameEngine>
+        {!this.state.running && 
+          <View style={styles.fullScreen}>
+            <View style={styles.pauseModal}>
+              <Text style={{fontSize: 35, marginBottom: 20}}>Paused</Text>
+              <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.button} onPress={this.pauseHandler}><Text style={styles.buttonText}>Resume</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={this.reset}><Text style={styles.buttonText}>Restart</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Exit</Text></TouchableOpacity>
+              </View>
             </View>
-        );
-    }
+          </View>
+        }
+
+        <TouchableOpacity style={styles.pauseButton} onPress={this.pauseHandler} ><Text style={styles.pauseText}>||</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.jumpButton} onPress={this.jumpHandler} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    pauseButton: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      width: 40,
+      height: 40,
+      backgroundColor: '#ddd',
+      zIndex: 99,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+    },
+    pauseText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    jumpButton: {
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+      width: 75,
+      height: 75,
+      borderRadius: 50,
+      backgroundColor: '#fff',
+      opacity: 0.8,
+      elevation: 5
+    },
+    jumpText: {
+      marginTop: 5,
+      textAlign: 'center',
+      fontSize: 60,
+    },
+    fullScreen: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      opacity: 0.8,
+      backgroundColor: '#aaa',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    pauseModal: {
+      height: 200,
+      width: 400,
+      borderRadius: 20,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#ffffff'
+    },
+    buttonRow:{
+      flexDirection: 'row',
+    },
+    button: {
+      borderColor: '#000000',
+      borderWidth: 1,
+      padding: 10,
+      margin: 10,
+      borderRadius: 10,
+    },
+    buttonText: {
+      textAlign: 'center',
+      fontSize: 20,
     },
     gameContainer: {
         position: 'absolute',
