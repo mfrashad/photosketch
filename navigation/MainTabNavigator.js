@@ -79,4 +79,4 @@ const tabNavigator = createBottomTabNavigator({
 
 tabNavigator.path = '';
 
-export default HomeStack;
+export default tabNavigator;

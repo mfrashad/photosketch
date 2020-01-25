@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Tex } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { ScreenOrientation } from 'expo';
+import Game from '../components/Game';
 
 import { WebView } from 'react-native-webview';
 
@@ -20,17 +21,17 @@ export default class GameScreen extends React.Component {
   }
 
   componentWillUnmount(){
-    this.potrait();
+    //this.potrait();
   }
 
   render(){
-    console.log(`http://www.mfrashad.com/phaser-platform-game/?map=${this.props.navigation.state.params.uploadResult.link_to_file}`.replace(/['"]+/g, ""))
-  return <WebView source={{ uri: `https://www.mfrashad.com/phaser-platform-game/?map=${this.props.navigation.state.params.uploadResult.link_to_file}`.replace(/['"]+/g, "") }} style={{ marginTop: -100 }} />;
+    return <Game/>;
   }
 }
 
 GameScreen.navigationOptions = {
   title: 'Game',
+  header: null,
 };
 
 const styles = StyleSheet.create({
