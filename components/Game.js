@@ -70,6 +70,7 @@ export default class Game extends Component {
     this.setState({
       running: true
     });
+    console.log(this.gameEngine)
   }
 
   pauseHandler = () => {
@@ -78,13 +79,6 @@ export default class Game extends Component {
       running: !prevState.running
     }))
   }
-
-  jumpHandler = () => {
-    console.log("Jump")
-    let player = this.entities.player.body;
-    Matter.Body.setVelocity( player, {x: 10, y: 10});
-  }
-
 
   render() {
     return (
@@ -113,7 +107,7 @@ export default class Game extends Component {
         }
 
         <TouchableOpacity style={styles.pauseButton} onPress={this.pauseHandler} ><Text style={styles.pauseText}>||</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.jumpButton} onPress={this.jumpHandler} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.jumpButton} onPress={() => this.gameEngine.dispatch({ type: "jump" })} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
       </View>
     );
   }

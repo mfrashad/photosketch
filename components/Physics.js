@@ -4,7 +4,7 @@ import Constants from "../constants/Constants";
 let onTouch = false;
 let lastTouch = null;
 
-const Physics = (entities, { touches, time }) => {
+const Physics = (entities, { touches, time, events }) => {
     let engine = entities.physics.engine;
     let player = entities.player.body;
     let t = touches[0];
@@ -26,13 +26,14 @@ const Physics = (entities, { touches, time }) => {
         }
     }
 
-    // if(touch != null && touch.type === 'start'){
-        // if(t.event.pageX > Constants.MAX_WIDTH/2){
-        //     Matter.Body.setVelocity( player, {x: 6, y: 0});
-        // } else {
-        //     Matter.Body.setVelocity( player, {x: -6, y: 0});
-        // }
-    // }
+    if (events.length){
+        for(let i=0; i<events.length; i++){
+            if (events[i].type === "jump" && player.velocity.y >= -0.01 && player.velocity.y <= 0.01){
+                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -8});
+                console.log('Jump');
+            }
+        }
+    }
 
     Matter.Engine.update(engine, time.delta);
 
