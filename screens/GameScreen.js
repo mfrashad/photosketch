@@ -17,7 +17,7 @@ export default class GameScreen extends React.Component {
   }
 
   componentDidMount(){
-    this.landscape();
+    //this.landscape();
   }
 
   componentWillUnmount(){

@@ -1,6 +1,8 @@
+
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Dimensions } from "react-native";
 import Matter from "matter-js";
+
 
 export class Renderer extends Component {
     render() {
@@ -23,16 +25,18 @@ export class Renderer extends Component {
   }
 }
 
-export default (world, x, y , width, height) => {
+export default (world, x, y) => {
+  let width = 40;
+  let height = 40;
   let body = Matter.Bodies.rectangle(x, y, width, height, {
-    isStatic: true,
-    label: "wall",
+      label: "player",
+      density: 0.01,
   });
   Matter.World.add(world, [body]);
   return {
     body,
     size: { width, height },
-    color: 'green',
+    color: 'red',
     renderer: <Renderer />
   };
-}
+};

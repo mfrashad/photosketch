@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar} from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
-import Bird from './Bird';
+import Player from './Player';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
 
 
-export default class App extends Component {
+export default class Game extends Component {
     constructor(props){
         super(props);
 
@@ -25,21 +25,25 @@ export default class App extends Component {
       let engine = Matter.Engine.create({ enableSleeping: false });
       let world = engine.world;
 
-      let bird = Matter.Bodies.rectangle( Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2, 50, 50);
-      let floor = Matter.Bodies.rectangle( Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50, { isStatic: true });
-      let ceiling = Matter.Bodies.rectangle( Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50, { isStatic: true });
-      let lWall = Matter.Bodies.rectangle( 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100, { isStatic: true });
-      let rWall = Matter.Bodies.rectangle( Constants.MAX_WIDTH - 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100, { isStatic: true });
+      let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
+      let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50);
+      let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
+      let lWall = Wall(world, 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
+      let rWall = Wall(world, Constants.MAX_WIDTH - 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
 
-      Matter.World.add(world, [bird, floor, ceiling, lWall, rWall]);
+      Matter.Events.on(engine, 'collisionStart', (event) => {
+          var pairs = event.pairs;
+          console.log(pairs[0].bodyB.label);
+          this.gameEngine.dispatch({ type: "game-over"});         
+      });
 
       return {
           physics: { engine: engine, world: world },
-          bird: { body: bird, size: [50, 50], color: 'red', renderer: Bird},
-          floor: { body: floor, size: [Constants.MAX_WIDTH, 50], color: "green", renderer: Wall },
-          ceiling: { body: ceiling, size: [Constants.MAX_WIDTH, 50], color: "green", renderer: Wall },
-          lWall: { body: lWall, size: [50, Constants.MAX_HEIGHT - 100], color: "blue", renderer: Wall },
-          rWall: { body: rWall, size: [50, Constants.MAX_HEIGHT - 100], color: "blue", renderer: Wall },
+          player,
+          floor,
+          ceiling,
+          lWall,
+          rWall,
       }
   }
 

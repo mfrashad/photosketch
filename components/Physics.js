@@ -3,13 +3,13 @@ import Constants from "../constants/Constants";
 
 const Physics = (entities, { touches, time }) => {
     let engine = entities.physics.engine;
-    let bird = entities.bird.body;
+    let player = entities.player.body;
 
     touches.filter(t => t.type === "press").forEach(t => {
         if(t.event.pageX > Constants.MAX_WIDTH/2){
-            Matter.Body.applyForce( bird, bird.position, {x: 0.01, y: -0.02});
+            Matter.Body.applyForce( player, player.position, {x: 0.2, y: -0.3});
         } else {
-            Matter.Body.applyForce( bird, bird.position, {x: -0.01, y: -0.02});
+            Matter.Body.applyForce( player, player.position, {x: -0.2, y: -0.3});
         }
     });
 
