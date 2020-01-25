@@ -34,7 +34,7 @@ export default (world, x, y , width, height) => {
   return {
     body,
     size: { width, height },
-    color: 'green',
+    color: '#2980b9',
     renderer: <Renderer />
   };
 }

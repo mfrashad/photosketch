@@ -16,14 +16,13 @@ const Physics = (entities, { touches, time }) => {
             onTouch = false;
         }
         lastTouch = t;
-        console.log(onTouch)
     }
     if(onTouch){
         t = lastTouch
         if(t.event.pageX > Constants.MAX_WIDTH/2){
-            Matter.Body.setVelocity( player, {x: 5, y: 0});
+            Matter.Body.setVelocity( player, {x: 2, y: player.velocity.y});
         } else {
-            Matter.Body.setVelocity( player, {x: -5, y: 0});
+            Matter.Body.setVelocity( player, {x: -2, y: player.velocity.y});
         }
     }
 
