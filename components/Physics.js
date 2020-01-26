@@ -3,6 +3,7 @@ import Constants from "../constants/Constants";
 
 const Physics = (entities, { touches, time, events }) => {
     let engine = entities.physics.engine;
+    let world = entities.physics.world;
     let player = entities.player.body;
     let allowJump = player.velocity.y >= -0.05 && player.velocity.y <= 0.05;
 
@@ -25,7 +26,8 @@ const Physics = (entities, { touches, time, events }) => {
 
     engine.onTouch.forEach((t, i) => {
         if(engine.onTouch[i]){
-            if(engine.lastTouch[i].event.pageY > Constants.MAX_HEIGHT - (Constants.JUMP_BUTTON_BOTTOM + Constants.JUMP_BUTTON_RADIUS)){
+            if(engine.lastTouch[i].event.pageY > Constants.MAX_HEIGHT - (Constants.JUMP_BUTTON_BOTTOM + Constants.JUMP_BUTTON_RADIUS) && 
+                engine.lastTouch[i].event.pageX > Constants.MAX_WIDTH - (Constants.JUMP_BUTTON_RIGHT + Constants.JUMP_BUTTON_RADIUS)){
                 if(allowJump) events.push({ type: "jump" });
             } else if(engine.lastTouch[i].event.pageX > Constants.MAX_WIDTH/2){
                 Matter.Body.setVelocity( player, {x: 2.5, y: player.velocity.y});
@@ -41,10 +43,10 @@ const Physics = (entities, { touches, time, events }) => {
                 Matter.Body.setVelocity(player, {x: player.velocity.x, y: -10});
                 console.log('Jump');
             }
-            else if (events[i].type === "game-over"){
-                console.log("Reset everything")
-                engine.onTouch = false;
-                engine.lastTouch = null;
+            else if (events[i].type === "get-coin"){
+                console.log("Get Coin");
+                Matter.Composite.remove(world, events[i].coin)
+                delete entities.coin;
             }
         }
     }

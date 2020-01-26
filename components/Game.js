@@ -4,6 +4,7 @@ import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Player from './Player';
 import Enemy from './Enemy';
+import Coin from './Coin';
 import Goal from './Goal';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
@@ -30,7 +31,8 @@ export default class Game extends Component {
       let world = engine.world;
 
       let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
-      let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
+      let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40)
+      let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
       let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
       let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50);
       let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
@@ -48,6 +50,8 @@ export default class Game extends Component {
             } else if(pair.bodyB.label === "goal"){
               console.log("Win");
               this.gameEngine.dispatch({ type: "win"});
+            } else if(pair.bodyB.label === "coin"){
+              this.gameEngine.dispatch({type: "get-coin", coin: pair.bodyB});
             }
           } 
       });
@@ -56,6 +60,7 @@ export default class Game extends Component {
           physics: { engine: engine, world: world },
           player,
           enemy,
+          coin,
           goal,
           floor,
           ceiling,
