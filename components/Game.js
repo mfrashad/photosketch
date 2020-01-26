@@ -32,6 +32,7 @@ export default class Game extends Component {
 
     setupWorld = () => {
       let engine = Matter.Engine.create({ enableSleeping: true });
+      engine.timing.timeScale = 0.5;
       let world = engine.world;
       let walls = [];
       let player = null;
@@ -44,7 +45,10 @@ export default class Game extends Component {
             const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
             //walls.push(wall);
             //entities[wall.id] = wall;
-          } else if(c === 6){
+          } else if (c === 3){
+            Enemy(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+          }
+          else if (c === 6){
             if(!player){
               player = Player( world, j*pixelRatio + 100, i*pixelRatio);
               entities.player = player;

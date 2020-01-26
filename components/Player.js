@@ -4,7 +4,6 @@ import { View, Dimensions } from "react-native";
 import Matter from "matter-js";
 
 import Constants from '../constants/Constants';
-
 const COLLISION_CATEGORY = Constants.COLLISION_CATEGORY;
 
 
@@ -42,7 +41,8 @@ export default (world, x, y) => {
       velocity: {x: 0, y: 0},
       collisionFilter: {
           category: COLLISION_CATEGORY.PLAYER,
-          mask: COLLISION_CATEGORY.WALL
+          mask: COLLISION_CATEGORY.WALL |
+                COLLISION_CATEGORY.ENEMY
       }
   });
   console.log(body.mass)

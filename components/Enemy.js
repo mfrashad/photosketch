@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import Matter from "matter-js";
 
+import Constants from '../constants/Constants';
+const COLLISION_CATEGORY = Constants.COLLISION_CATEGORY;
+
 export class Renderer extends Component {
     render() {
         const width = this.props.size.width;
@@ -29,6 +32,10 @@ export default (world, x, y , width, height) => {
     isStatic: true,
     friction: 1,
     restitution: 0,
+    collisionFilter: {
+      category: COLLISION_CATEGORY.ENEMY,
+      mask: COLLISION_CATEGORY.PLAYER
+    }
   });
   Matter.World.add(world, [body]);
   return {
