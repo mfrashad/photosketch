@@ -18,11 +18,10 @@ const Physics = (entities, { touches, time, events }) => {
         lastTouch = t;
     }
     if(onTouch){
-        t = lastTouch
-        if(t.event.pageX > Constants.MAX_WIDTH/2){
-            Matter.Body.setVelocity( player, {x: 2, y: player.velocity.y});
+        if(lastTouch.event.pageX > Constants.MAX_WIDTH/2){
+            Matter.Body.setVelocity( player, {x: 3, y: player.velocity.y});
         } else {
-            Matter.Body.setVelocity( player, {x: -2, y: player.velocity.y});
+            Matter.Body.setVelocity( player, {x: -3, y: player.velocity.y});
         }
     }
 

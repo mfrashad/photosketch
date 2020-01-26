@@ -4,6 +4,7 @@ import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Player from './Player';
 import Enemy from './Enemy';
+import Goal from './Goal';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
@@ -15,7 +16,8 @@ export default class Game extends Component {
         super(props);
 
         this.state = {
-            running: true
+            running: true,
+            winning: false,
         };
 
         this.gameEngine = null;
@@ -28,7 +30,8 @@ export default class Game extends Component {
       let world = engine.world;
 
       let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
-      let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
+      let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
+      let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
       let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50);
       let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
       let lWall = Wall(world, 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
@@ -38,16 +41,22 @@ export default class Game extends Component {
           let pairs = event.pairs;
           let pair = pairs[0];
           console.log(pair.bodyA.label, pair.bodyB.label);
-          if(pair.bodyA.label === "player" && pair.bodyB.label === "enemy"){
-            console.log("Game Over");
-            this.gameEngine.dispatch({ type: "game-over"});
-          }
+          if(pair.bodyA.label === "player"){
+            if(pair.bodyB.label === "enemy") {
+              console.log("Game Over");
+              this.gameEngine.dispatch({ type: "game-over"});
+            } else if(pair.bodyB.label === "goal"){
+              console.log("Win");
+              this.gameEngine.dispatch({ type: "win"});
+            }
+          } 
       });
 
       return {
           physics: { engine: engine, world: world },
           player,
           enemy,
+          goal,
           floor,
           ceiling,
           lWall,
@@ -62,13 +71,19 @@ export default class Game extends Component {
           running: false
       });
       this.reset();
+    } else if (e.type === "win"){
+      this.setState({
+        running: false,
+        win: true,
+      });
     }
   }
 
   reset = () => {
     this.gameEngine.swap(this.setupWorld());
     this.setState({
-      running: true
+      running: true,
+      win: false
     });
     console.log(this.gameEngine)
   }
@@ -96,9 +111,9 @@ export default class Game extends Component {
         {!this.state.running && 
           <View style={styles.fullScreen}>
             <View style={styles.pauseModal}>
-              <Text style={{fontSize: 35, marginBottom: 20}}>Paused</Text>
+              <Text style={{fontSize: 35, marginBottom: 20}}>{this.state.win ? "You Win!" : "Paused"}</Text>
               <View style={styles.buttonRow}>
-                <TouchableOpacity style={styles.button} onPress={this.pauseHandler}><Text style={styles.buttonText}>Resume</Text></TouchableOpacity>
+                {!this.state.win && <TouchableOpacity style={styles.button} onPress={this.pauseHandler}><Text style={styles.buttonText}>Resume</Text></TouchableOpacity>}
                 <TouchableOpacity style={styles.button} onPress={this.reset}><Text style={styles.buttonText}>Restart</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Exit</Text></TouchableOpacity>
               </View>
