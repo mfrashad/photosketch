@@ -34,6 +34,7 @@ export default (world, x, y) => {
       restitution: 0,
       friction: 1,
       frictionAir: 0,
+      velocity: {x: 0, y: 0}
   });
   Matter.World.add(world, [body]);
   return {

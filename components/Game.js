@@ -85,7 +85,6 @@ export default class Game extends Component {
       running: true,
       win: false
     });
-    console.log(this.gameEngine)
   }
 
   pauseHandler = () => {
@@ -122,7 +121,7 @@ export default class Game extends Component {
         }
 
         <TouchableOpacity style={styles.pauseButton} onPress={this.pauseHandler} ><Text style={styles.pauseText}>||</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.jumpButton} onPress={() => this.gameEngine.dispatch({ type: "jump" })} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.jumpButton} onPressIn={() => this.gameEngine.dispatch({ type: "jump" })} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
       </View>
     );
   }
