@@ -38,7 +38,6 @@ export default (world, x, y) => {
       restitution: 0,
       friction: 1,
       frictionStatic: 200,
-      slop: 2,
       frictionAir: 0,
       velocity: {x: 0, y: 0},
       collisionFilter: {

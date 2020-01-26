@@ -41,19 +41,19 @@ export default class Game extends Component {
         for(let j = 0; j < map[i].length; j+= 1){
           const c = parseInt(map[i][j]);
           if(c === 1){
-            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 3, pixelRatio * 3);
+            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
             //walls.push(wall);
             //entities[wall.id] = wall;
           } else if(c === 6){
-            
+            if(!player){
+              player = Player( world, j*pixelRatio + 100, i*pixelRatio);
+              entities.player = player;
+            }
           }
         }
       }
 
-      if(!player){
-        player = Player( world, 100, Constants.MAX_HEIGHT - 100);
-        entities.player = player;
-      }
+      
       // let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
       // let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40);
       // let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
@@ -67,7 +67,6 @@ export default class Game extends Component {
           let pairs = event.pairs;
           let pair = pairs[0];
           if(pair.bodyA.label === "player"){
-            console.log(pair.bodyB.label);
             if(pair.bodyB.label === "enemy") {
               console.log("Game Over");
               this.gameEngine.dispatch({ type: "game-over"});
