@@ -35,9 +35,11 @@ export default class Game extends Component {
       engine.timing.timeScale = 0.5;
       let world = engine.world;
       let walls = [];
+      let coins = [];
       let player = null;
       let entities = {physics: { engine: engine, world: world }};
       const map = SampleMap.mapdata;
+      
       for(let i = 0; i < map.length; i+= 1){
         for(let j = 0; j < map[i].length; j+= 1){
           const c = parseInt(map[i][j]);
@@ -47,6 +49,9 @@ export default class Game extends Component {
             //entities[wall.id] = wall;
           } else if (c === 3){
             Enemy(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+          } else if (c === 2){
+            const goal = Goal(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+            // entities[`${i}${j}`] = goal;
           }
           else if (c === 6){
             if(!player){
@@ -56,6 +61,16 @@ export default class Game extends Component {
           }
         }
       }
+
+      const coinsData = SampleMap.Coin_BBs
+      coinsData.forEach((c, i) => {
+        const w = c[2] * pixelRatio;
+        const h = c[3] * pixelRatio;
+        const x = c[0] * pixelRatio + w/2;
+        const y = c[1] * pixelRatio + h/2;
+        const coin = Coin(world, x, y, w, h);
+        entities[`${x}${y}`] = coin;
+      })
 
       
       // let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);

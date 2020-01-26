@@ -42,7 +42,9 @@ export default (world, x, y) => {
       collisionFilter: {
           category: COLLISION_CATEGORY.PLAYER,
           mask: COLLISION_CATEGORY.WALL |
-                COLLISION_CATEGORY.ENEMY
+                COLLISION_CATEGORY.ENEMY |
+                COLLISION_CATEGORY.COIN |
+                COLLISION_CATEGORY.GOAL
       }
   });
   console.log(body.mass)

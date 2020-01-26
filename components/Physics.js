@@ -72,8 +72,10 @@ const Physics = (entities, { touches, time, events }) => {
             }
             else if (events[i].type === "get-coin"){
                 console.log("Get Coin");
-                Matter.Composite.remove(world, events[i].coin)
-                delete entities.coin;
+                const coin = events[i].coin;
+                delete entities[`${coin.position.x}${coin.position.y}`];
+                Matter.Composite.remove(world, coin)
+                
             }
         }
     }
