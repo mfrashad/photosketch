@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, View, StatusBar, TouchableOpacity, Text, Image} from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
 import Player from './Player';
@@ -9,7 +9,11 @@ import Goal from './Goal';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
+import SampleMap from '../constants/SampleMap';
 import { enumBooleanBody } from '@babel/types';
+
+console.log(Constants.MAX_WIDTH, Constants.MAX_HEIGHT);
+const pixelRatio = Constants.MAX_HEIGHT/570;
 
 
 export default class Game extends Component {
@@ -29,21 +33,59 @@ export default class Game extends Component {
     setupWorld = () => {
       let engine = Matter.Engine.create({ enableSleeping: false });
       let world = engine.world;
-
-      let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
-      let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40)
-      let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
-      let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
-      let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50);
-      let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
-      let lWall = Wall(world, 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
-      let rWall = Wall(world, Constants.MAX_WIDTH - 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
+      let walls = [];
+      let player = null;
+      let entities = {physics: { engine: engine, world: world }};
+      const map = SampleMap.mapdata;
+      // const map = [
+      //   "11111111111111111111111111111",
+      //   "11111111111111111111111111111",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11006600000000000000000000011",
+      //   "11006600000000000000000000011",
+      //   "11000000000000000000000000011",
+      //   "11111111111111111111111111111",
+      //   "11111111111111111111111111111",
+      // ]
+      for(let i = 0; i < map.length; i+= 1){
+        for(let j = 0; j < map[i].length; j+= 1){
+          const c = parseInt(map[i][j]);
+          if(c === 1 || i >= (map.length-1) || j >= (map[i].length - 1) ){
+            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio, pixelRatio);
+            //walls.push(wall);
+            //entities[wall.id] = wall;
+          } else if(c === 6){
+            
+          }
+        }
+      }
+      if(!player){
+        player = Player( world, 100, Constants.MAX_HEIGHT - 100);
+        entities.player = player;
+      }
+      // let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
+      // let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40);
+      // let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
+      // let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
+      //let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 40);
+      //entities.floor = floor;
+      // let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
+      // let lWall = Wall(world, 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
+      // let rWall = Wall(world, Constants.MAX_WIDTH - 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
 
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;
           let pair = pairs[0];
-          console.log(pair.bodyA.label, pair.bodyB.label);
           if(pair.bodyA.label === "player"){
+            console.log(pair.bodyB.label);
             if(pair.bodyB.label === "enemy") {
               console.log("Game Over");
               this.gameEngine.dispatch({ type: "game-over"});
@@ -56,17 +98,7 @@ export default class Game extends Component {
           } 
       });
 
-      return {
-          physics: { engine: engine, world: world },
-          player,
-          enemy,
-          coin,
-          goal,
-          floor,
-          ceiling,
-          lWall,
-          rWall,
-      }
+      return entities;
   }
 
   onEvent = (e) => {
@@ -102,7 +134,7 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        {this.state.running &&  <Image source={require('../assets/images/game.jpeg')} style={styles.sketchImage} />}
         <GameEngine
           ref={(ref) => { this.gameEngine = ref; }}
           style={styles.gameContainer}
@@ -112,7 +144,7 @@ export default class Game extends Component {
           entities={this.entities}>
           <StatusBar hidden={true} />
         </GameEngine>
-        {!this.state.running && 
+        {!this.state.running &&
           <View style={styles.fullScreen}>
             <View style={styles.pauseModal}>
               <Text style={{fontSize: 35, marginBottom: 20}}>{this.state.win ? "You Win!" : "Paused"}</Text>
@@ -127,6 +159,7 @@ export default class Game extends Component {
 
         <TouchableOpacity style={styles.pauseButton} onPress={this.pauseHandler} ><Text style={styles.pauseText}>||</Text></TouchableOpacity>
         <TouchableOpacity style={styles.jumpButton} onPressIn={() => this.gameEngine.dispatch({ type: "jump" })} ><Text style={styles.jumpText}>^</Text></TouchableOpacity>
+        
       </View>
     );
   }
@@ -136,6 +169,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    sketchImage: {
+      position: 'absolute',
+      height: Constants.MAX_HEIGHT,
+      width: 800 * pixelRatio,
+      resizeMode: 'cover',
+      opacity: 0.5,
+      top: 0,
+      left: 0,
     },
     pauseButton: {
       position: 'absolute',

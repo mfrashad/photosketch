@@ -5,5 +5,12 @@ export default Constants = {
     MAX_HEIGHT: Dimensions.get("screen").height,
     JUMP_BUTTON_RADIUS: 75,
     JUMP_BUTTON_RIGHT: 30,
-    JUMP_BUTTON_BOTTOM: 30 
+    JUMP_BUTTON_BOTTOM: 30,
+    COLLISION_CATEGORY: {
+      PLAYER: 1,
+      WALL: 2,
+      COIN: 4,
+      ENEMY: 8,
+      WIN: 16,
+    },
 }

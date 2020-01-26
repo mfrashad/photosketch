@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import { View, Dimensions } from "react-native";
 import Matter from "matter-js";
 
+import Constants from '../constants/Constants';
+
+const COLLISION_CATEGORY = Constants.COLLISION_CATEGORY;
+
 
 export class Renderer extends Component {
     render() {
@@ -26,15 +30,19 @@ export class Renderer extends Component {
 }
 
 export default (world, x, y) => {
-  let width = 40;
-  let height = 40;
+  let width = 20;
+  let height = 20;
   let body = Matter.Bodies.rectangle(x, y, width, height, {
       label: "player",
       density: 0.01,
       restitution: 0,
       friction: 1,
       frictionAir: 0,
-      velocity: {x: 0, y: 0}
+      velocity: {x: 0, y: 0},
+      collisionFilter: {
+          category: COLLISION_CATEGORY.PLAYER,
+          mask: COLLISION_CATEGORY.WALL
+      }
   });
   Matter.World.add(world, [body]);
   return {

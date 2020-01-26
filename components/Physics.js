@@ -40,7 +40,7 @@ const Physics = (entities, { touches, time, events }) => {
     if (events.length){
         for(let i=0; i<events.length; i++){
             if (events[i].type === "jump" && allowJump){
-                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -10});
+                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -15});
                 console.log('Jump');
             }
             else if (events[i].type === "get-coin"){
