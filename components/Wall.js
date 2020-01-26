@@ -31,6 +31,7 @@ export default (world, x, y , width, height) => {
     label: "wall",
     isStatic: true,
     friction: 1,
+    frictionStatic: 200,
     restitution: 0,
     collisionFilter: {
       category: COLLISION_CATEGORY.WALL,

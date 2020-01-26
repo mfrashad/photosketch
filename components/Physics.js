@@ -5,6 +5,9 @@ const Physics = (entities, { touches, time, events }) => {
     let engine = entities.physics.engine;
     let world = entities.physics.world;
     let player = entities.player.body;
+    Matter.Sleeping.set(player, false);
+
+    Matter.Body.setVelocity( player, {x: 0, y: player.velocity.y});
     let allowJump = player.velocity.y >= -0.05 && player.velocity.y <= 0.05;
 
     if(!engine.onTouch) engine.onTouch = [];
@@ -30,9 +33,9 @@ const Physics = (entities, { touches, time, events }) => {
                 engine.lastTouch[i].event.pageX > Constants.MAX_WIDTH - (Constants.JUMP_BUTTON_RIGHT + Constants.JUMP_BUTTON_RADIUS)){
                 if(allowJump) events.push({ type: "jump" });
             } else if(engine.lastTouch[i].event.pageX > Constants.MAX_WIDTH/2){
-                Matter.Body.setVelocity( player, {x: 2.5, y: player.velocity.y});
+                Matter.Body.setVelocity( player, {x: 4, y: player.velocity.y});
             } else {
-                Matter.Body.setVelocity( player, {x: -2.5, y: player.velocity.y});
+                Matter.Body.setVelocity( player, {x: -4, y: player.velocity.y});
             }
         }
     })
@@ -40,7 +43,7 @@ const Physics = (entities, { touches, time, events }) => {
     if (events.length){
         for(let i=0; i<events.length; i++){
             if (events[i].type === "jump" && allowJump){
-                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -15});
+                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -20});
                 console.log('Jump');
             }
             else if (events[i].type === "get-coin"){

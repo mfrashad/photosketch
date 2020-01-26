@@ -31,35 +31,17 @@ export default class Game extends Component {
     }
 
     setupWorld = () => {
-      let engine = Matter.Engine.create({ enableSleeping: false });
+      let engine = Matter.Engine.create({ enableSleeping: true });
       let world = engine.world;
       let walls = [];
       let player = null;
       let entities = {physics: { engine: engine, world: world }};
       const map = SampleMap.mapdata;
-      // const map = [
-      //   "11111111111111111111111111111",
-      //   "11111111111111111111111111111",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11006600000000000000000000011",
-      //   "11006600000000000000000000011",
-      //   "11000000000000000000000000011",
-      //   "11111111111111111111111111111",
-      //   "11111111111111111111111111111",
-      // ]
       for(let i = 0; i < map.length; i+= 1){
         for(let j = 0; j < map[i].length; j+= 1){
           const c = parseInt(map[i][j]);
-          if(c === 1 || i >= (map.length-1) || j >= (map[i].length - 1) ){
-            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio, pixelRatio);
+          if(c === 1){
+            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 3, pixelRatio * 3);
             //walls.push(wall);
             //entities[wall.id] = wall;
           } else if(c === 6){
@@ -67,6 +49,7 @@ export default class Game extends Component {
           }
         }
       }
+
       if(!player){
         player = Player( world, 100, Constants.MAX_HEIGHT - 100);
         entities.player = player;
@@ -75,11 +58,10 @@ export default class Game extends Component {
       // let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40);
       // let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
       // let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
-      //let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 40);
-      //entities.floor = floor;
-      // let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50);
-      // let lWall = Wall(world, 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
-      // let rWall = Wall(world, Constants.MAX_WIDTH - 25, Constants.MAX_HEIGHT/2, 50, Constants.MAX_HEIGHT - 100);
+      let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 5, Constants.MAX_WIDTH, 10);
+      let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 5, Constants.MAX_WIDTH, 10);
+      let lWall = Wall(world, 5, Constants.MAX_HEIGHT/2, 10, Constants.MAX_HEIGHT - 5);
+      let rWall = Wall(world, Constants.MAX_WIDTH - 5, Constants.MAX_HEIGHT/2, 10, Constants.MAX_HEIGHT - 5);
 
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;

@@ -37,6 +37,8 @@ export default (world, x, y) => {
       density: 0.01,
       restitution: 0,
       friction: 1,
+      frictionStatic: 200,
+      slop: 2,
       frictionAir: 0,
       velocity: {x: 0, y: 0},
       collisionFilter: {
@@ -44,6 +46,7 @@ export default (world, x, y) => {
           mask: COLLISION_CATEGORY.WALL
       }
   });
+  console.log(body.mass)
   Matter.World.add(world, [body]);
   return {
     body,
