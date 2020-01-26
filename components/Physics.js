@@ -29,8 +29,11 @@ const Physics = (entities, { touches, time, events }) => {
     if (events.length){
         for(let i=0; i<events.length; i++){
             if (events[i].type === "jump" && player.velocity.y >= -0.01 && player.velocity.y <= 0.01){
-                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -8});
+                Matter.Body.setVelocity(player, {x: player.velocity.x, y: -10});
                 console.log('Jump');
+            }
+            else if (events[i].type === "game-over"){
+                onTouch = false;
             }
         }
     }
