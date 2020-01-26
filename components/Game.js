@@ -45,8 +45,8 @@ export default class Game extends Component {
           const c = parseInt(map[i][j]);
           if(c === 1){
             const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
-            //walls.push(wall);
-            //entities[wall.id] = wall;
+            // walls.push(wall);
+            // entities[wall.id] = wall;
           } else if (c === 3){
             Enemy(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
           } else if (c === 2){
@@ -56,6 +56,8 @@ export default class Game extends Component {
           else if (c === 6){
             if(!player){
               player = Player( world, j*pixelRatio + 100, i*pixelRatio);
+              // let goal = Goal(world, j*pixelRatio + 300, i*pixelRatio, 20, 20);
+              // entities.goal = goal;
               entities.player = player;
             }
           }
@@ -85,7 +87,12 @@ export default class Game extends Component {
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;
           let pair = pairs[0];
+          if(pair.bodyA.label === "goal" || pair.bodyB.label === "goal"){
+            console.log("Win");
+            this.gameEngine.dispatch({ type: "win"});
+          }
           if(pair.bodyA.label === "player"){
+            if(pair.bodyB.label != "wall") console.log(pair.bodyB.label);
             if(pair.bodyB.label === "enemy") {
               console.log("Game Over");
               this.gameEngine.dispatch({ type: "game-over"});

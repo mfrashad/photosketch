@@ -10,7 +10,7 @@ export default Constants = {
       PLAYER: 1,
       WALL: 2,
       COIN: 4,
-      ENEMY: 8,
-      GOAL: 16,
+      GOAL: 8,
+      ENEMY: 16,
     },
 }
