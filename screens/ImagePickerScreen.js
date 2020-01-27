@@ -10,23 +10,17 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import { Constants } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+import firebase from '../utils/firebase'
+
 export default class ImagePickerScreen extends Component {
-  state = {
-    image: null,
-    uploading: false,
-  };
-
   render() {
-    let {
-      image
-    } = this.state;
-
     return (
       <View style={styles.container}>
         <StatusBar barStyle="default" />
@@ -36,8 +30,6 @@ export default class ImagePickerScreen extends Component {
             style={styles.exampleText}>
             Upload your game sketches
           </Text>
-          {this._maybeRenderImage()}
-          {this._maybeRenderUploadingOverlay()}
         </View>
         <View style={styles.buttonsContainer} >
           <TouchableOpacity
@@ -56,44 +48,6 @@ export default class ImagePickerScreen extends Component {
       </View>
     );
   }
-
-  _maybeRenderUploadingOverlay = () => {
-    if (this.state.uploading) {
-      return (
-        <View
-          style={[StyleSheet.absoluteFill, styles.maybeRenderUploading]}>
-          <ActivityIndicator color="#fff" size="large" />
-        </View>
-      );
-    }
-  };
-
-  _maybeRenderImage = () => {
-    let {
-      image
-    } = this.state;
-
-    if (!image) {
-      return;
-    }
-
-    return (
-      <View
-        style={styles.maybeRenderContainer}>
-        <View
-          style={styles.maybeRenderImageContainer}>
-          <Image source={{ uri: image }} style={styles.maybeRenderImage} />
-        </View>
-
-        <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
-          style={styles.maybeRenderImageText}>
-          {image}
-        </Text>
-      </View>
-    );
-  };
 
   _share = () => {
     Share.share({
@@ -145,67 +99,10 @@ export default class ImagePickerScreen extends Component {
   };
 
   _handleImagePicked = async pickerResult => {
-    let uploadResponse, uploadResult;
-
-    try {
-      this.setState({
-        uploading: true
-      });
-
-      if (!pickerResult.cancelled) {
-        uploadResponse = await uploadImageAsync(pickerResult.uri);
-        uploadResult = await uploadResponse.json();
-        console.log({ uploadResult});
-        // this.setState({
-        //   image: uploadResult.location
-        // });
-        this.props.navigation.navigate('Game', { uploadResult })
-      }
-    } catch (e) {
-      console.log({ uploadResponse });
-      console.log({ uploadResult });
-      console.log({ e });
-      alert('Upload failed, sorry :(');
-    } finally {
-      this.setState({
-        uploading: false
-      });
+    if (!pickerResult.cancelled) {
+      this.props.navigation.navigate('GameForm', { image: pickerResult.uri })
     }
   };
-}
-
-async function uploadImageAsync(uri) {
-  let apiUrl = 'http://photosketch.pythonanywhere.com/upload_image';
-
-  // Note:
-  // Uncomment this if you want to experiment with local server
-  //
-  // if (Constants.isDevice) {
-  //   apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
-  // } else {
-  //   apiUrl = `http://localhost:3000/upload`
-  // }
-
-  let uriParts = uri.split('.');
-  let fileType = uriParts[uriParts.length - 1];
-
-  let formData = new FormData();
-  formData.append('file', {
-    uri,
-    name: `photo.${fileType}`,
-    type: `image/${fileType}`,
-  });
-
-  let options = {
-    method: 'POST',
-    body: formData,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-  };
-
-  return fetch(apiUrl, options);
 }
 
 const styles = StyleSheet.create({

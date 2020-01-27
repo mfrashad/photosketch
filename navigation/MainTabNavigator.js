@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import GameScreen from '../screens/GameScreen';
+import GameFormScreen from '../screens/GameFormScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ImagePickerScreen from '../screens/ImagePickerScreen';
 
@@ -18,6 +19,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     ImagePicker: ImagePickerScreen,
+    GameForm: GameFormScreen,
     Game: GameScreen
   },
   config
