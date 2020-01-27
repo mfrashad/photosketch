@@ -19,6 +19,7 @@
     "expo-asset": "~8.0.0",
     "expo-constants": "~8.0.0",
     "expo-font": "~8.0.0",
+    "expo-google-app-auth": "^8.0.0",
     "expo-image-picker": "~8.0.1",
     "expo-permissions": "~8.0.0",
     "expo-web-browser": "~8.0.0",
