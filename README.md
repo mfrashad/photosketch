@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/mfrashad/photoSketch">
-    <img src="/assets/image/photosketch-logo.png" alt="Logo" width="600">
+    <img src="/assets/images/photosketch-logo.png" alt="Logo" width="600">
   </a>
 
   <h3 align="center">PhotoSketch</h3>
@@ -48,6 +48,10 @@ A portfolio website for Muhammad Fathy Rashad
 After installing expo, you can proceed to clone the project:
 ```
 $ git clone https://github.com/mfrashad/photoSketch.git
+```
+Install the dependencies, make sure you have a package manager such as npm or yarn
+```
+yarn install
 ```
 
 To run the app, make sure your emulator is running or your phone is connected to your pc, then run:
