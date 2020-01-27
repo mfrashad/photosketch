@@ -1,31 +1,15 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, Image } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import { FloatingAction } from "react-native-floating-action";
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import firebase from '../utils/firebase';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Game',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Game',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Game',
-  },
-];
 
 const actions = [
   {
     text: "Create New Game",
-    icon: require("../assets/images/icon.png"),
+    icon: (<Ionicons name="md-add" size={30} color="#141414" />),
     name: "imagePicker",
     position: 1
   }
@@ -90,10 +74,10 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-        <Text style={styles.title}> My Games </Text>
+        
         <FlatList
           data={this.state.games}
+          ListHeaderComponent={<Text style={styles.title}> My Games </Text>}
           renderItem={({ item }) => <Item {...item} onPress={this.gameHandler(item.game, item.image)} />}
           keyExtractor={item => item.id}
         />
@@ -105,7 +89,6 @@ export default class HomeScreen extends React.Component {
           shadowStyle={styles.fabShadow}
           fixNativeFeedbackRadius={true}
         />
-        </ScrollView>
       </SafeAreaView>
     );
   }
