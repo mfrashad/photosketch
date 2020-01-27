@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, Image, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { FloatingAction } from "react-native-floating-action";
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -72,7 +72,11 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.isLoading? (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size={100} color="#141414" />
+      </View>
+    ) : (
       <SafeAreaView style={styles.container}>
         
         <FlatList
@@ -103,6 +107,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemContainer:{
     marginHorizontal: 30,

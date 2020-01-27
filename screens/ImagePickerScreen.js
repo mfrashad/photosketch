@@ -105,6 +105,11 @@ export default class ImagePickerScreen extends Component {
   };
 }
 
+ImagePickerScreen.navigationOptions = {
+  headerTitle: 'Pick a Game Sketch'
+};
+
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',

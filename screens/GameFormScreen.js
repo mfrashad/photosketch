@@ -20,7 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import firebase from '../utils/firebase'
 
-export default class ImagePickerScreen extends Component {
+export default class GameFormScreen extends Component {
   state = {
     currentUser: null,
     image: null,
@@ -183,6 +183,10 @@ async function uploadImageAsync(uri) {
 
   return fetch(apiUrl, options);
 }
+
+GameFormScreen.navigationOptions = {
+  headerTitle: 'Create a Game'
+};
 
 const styles = StyleSheet.create({
   container: {
