@@ -51,6 +51,7 @@ LinksStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
+  tabBarVisible: false,
 };
 
 LinksStack.path = '';
@@ -79,4 +80,4 @@ const tabNavigator = createBottomTabNavigator({
 
 tabNavigator.path = '';
 
-export default HomeStack;
+export default tabNavigator;

@@ -1,14 +1,37 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Dimensions } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { ScreenOrientation } from 'expo';
+import Game from '../components/Game';
 
 import { WebView } from 'react-native-webview';
 
 export default class GameScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    }
+
+    this.onLayout = this.onLayout.bind(this);
+
+  }
+
+  onLayout(e) {
+    this.setState({
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    });
+  }
 
   async landscape() {
     await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.LANDSCAPE)
+    this.setState({
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    });
   }
 
   async potrait() {
@@ -24,13 +47,13 @@ export default class GameScreen extends React.Component {
   }
 
   render(){
-    console.log(`http://www.mfrashad.com/phaser-platform-game/?map=${this.props.navigation.state.params.uploadResult.link_to_file}`.replace(/['"]+/g, ""))
-  return <WebView source={{ uri: `https://www.mfrashad.com/phaser-platform-game/?map=${this.props.navigation.state.params.uploadResult.link_to_file}`.replace(/['"]+/g, "") }} style={{ marginTop: -100 }} />;
+    return <Game onLayout={this.onLayout} navigation={this.props.navigation} />;
   }
 }
 
 GameScreen.navigationOptions = {
   title: 'Game',
+  header: null,
 };
 
 const styles = StyleSheet.create({
