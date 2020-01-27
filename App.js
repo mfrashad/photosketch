@@ -21,11 +21,10 @@ export default function App(props) {
     );
   } else {
     return (
-      <GameScreen />
-      // <View style={styles.container}>
-      //   {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-      //   <AppNavigator />
-      // </View>
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppNavigator />
+      </View>
     );
   }
 }

@@ -123,6 +123,10 @@ export default class Game extends Component {
     }
   }
 
+  exit = () => {
+    this.props.navigation.navigate('Home');
+  }
+
   reset = () => {
     this.gameEngine.swap(this.setupWorld());
     this.setState({
@@ -158,7 +162,7 @@ export default class Game extends Component {
               <View style={styles.buttonRow}>
                 {!this.state.win && <TouchableOpacity style={styles.button} onPress={this.pauseHandler}><Text style={styles.buttonText}>Resume</Text></TouchableOpacity>}
                 <TouchableOpacity style={styles.button} onPress={this.reset}><Text style={styles.buttonText}>Restart</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Exit</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={this.exit} ><Text style={styles.buttonText}>Exit</Text></TouchableOpacity>
               </View>
             </View>
           </View>
