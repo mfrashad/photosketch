@@ -48,6 +48,7 @@ export default class GameScreen extends React.Component {
 
   render(){
     const { gameURL, imageURL } = this.props.navigation.state.params;
+    console.log(gameURL, imageURL);
     return (
     <Game 
       onLayout={this.onLayout} 

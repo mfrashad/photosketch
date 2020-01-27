@@ -1,9 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, Image } from 'react-native';
 import { FloatingAction } from "react-native-floating-action";
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import firebase from '../utils/firebase';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 const DATA = [
   {
@@ -30,23 +32,69 @@ const actions = [
 ];
 
 
-function Item({ title }) {
+function Item({ title, game, image, description, onPress }) {
+  console.log(image);
   return (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
+      <Image style={styles.itemImage} source={{ uri: image }} />
       <Text style={styles.itemTitle}>{title}</Text>
-      <View style={styles.itemImage}></View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export default class HomeScreen extends React.Component {
+
+  state = {
+    currentUser: null,
+    isLoading: true,
+    games: [],
+  }
+
+  
+
+  componentDidMount() {
+    const { currentUser } = firebase.auth()
+    this.setState({ currentUser }, () => this.fetchGames());
+  }
+
+  gameHandler = (game, image) => () => {
+    console.log("handler", game);
+    this.props.navigation.navigate('Game', { gameURL: game, imageURL: image })
+  }
+  
+  fetchGames = () => {
+    this.unsubscribe = firebase.firestore().collection('games')
+    .where("user", "==", this.state.currentUser.uid)
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => {
+      if(snapshot.empty) {
+        this.setState({isLoading: false})
+      }
+      snapshot.docChanges().forEach(change => {
+          if (change.type === "added") {
+              console.log('exist')
+              let game = change.doc.data();
+              game['id'] = change.doc.id
+              this.setState({games: [...this.state.games, game], isLoading: false});
+          }
+          if (change.type === "modified") {
+              //console.log("Modified city: ", change.doc.data());
+          }
+          if (change.type === "removed") {
+              //console.log("Removed city: ", change.doc.data());
+          }
+      });
+    })
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <ScrollView>
         <Text style={styles.title}> My Games </Text>
         <FlatList
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} />}
+          data={this.state.games}
+          renderItem={({ item }) => <Item {...item} onPress={this.gameHandler(item.game, item.image)} />}
           keyExtractor={item => item.id}
         />
         <FloatingAction
@@ -57,6 +105,7 @@ export default class HomeScreen extends React.Component {
           shadowStyle={styles.fabShadow}
           fixNativeFeedbackRadius={true}
         />
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -74,23 +123,27 @@ const styles = StyleSheet.create({
   },
   itemContainer:{
     marginHorizontal: 30,
-    marginBottom: 30
+    marginBottom: 30,
+    justifyContent: 'center',
+    flexDirection: 'column',
 
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: 'red',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    justifyContent: 'center',
   },
   itemTitle: {
-    fontSize: 20,
+    fontSize: 30,
     marginBottom: 10,
   },
   itemImage: {
-    height: 150,
+    width: '100%',
+    height: 180,
     borderRadius: 10,
-    backgroundColor: "#ADADAD"
+    marginBottom: 10,
   },
 
   title: {
