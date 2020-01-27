@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/mfrashad/photoSketch">
-    <img src="/assets/images/photosketch-logo.png" alt="Logo" width="600">
+    <img src="/assets/images/photosketch-logo.png" alt="Logo" width="300">
   </a>
 
   <h3 align="center">PhotoSketch</h3>
