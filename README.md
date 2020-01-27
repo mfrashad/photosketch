@@ -7,7 +7,7 @@
   <h3 align="center">PhotoSketch</h3>
 
   <p align="center">
-    Hand-drawn sketch game prototyping app.
+    Hand-drawn Sketch Game Prototyping App.
     <br />
     <a href="https://github.com/mfrashad/photoSketch"><strong>Explore the docs »</strong></a>
     <br />
@@ -24,7 +24,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A portfolio website for Muhammad Fathy Rashad
+An app that generates a 2D platform game based on a given hand-drawn sketch.
 
 ### Built With
 
