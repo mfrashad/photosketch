@@ -1,8 +1,10 @@
 import { Dimensions } from 'react-native';
+const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 
 export default Constants = {
-    MAX_WIDTH: Dimensions.get("screen").width,
-    MAX_HEIGHT: Dimensions.get("screen").height,
+    MAX_WIDTH: Math.max(width, height),
+    MAX_HEIGHT: Math.min(width, height),
     JUMP_BUTTON_RADIUS: 75,
     JUMP_BUTTON_RIGHT: 30,
     JUMP_BUTTON_BOTTOM: 30,

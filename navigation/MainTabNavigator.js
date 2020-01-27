@@ -26,17 +26,17 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  ),
+  // tabBarLabel: 'Home',
+  // tabBarIcon: ({ focused }) => (
+  //   <TabBarIcon
+  //     focused={focused}
+  //     name={
+  //       Platform.OS === 'ios'
+  //         ? `ios-information-circle${focused ? '' : '-outline'}`
+  //         : 'md-information-circle'
+  //     }
+  //   />
+  // ),
 };
 
 HomeStack.path = '';
@@ -74,12 +74,12 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
-});
+// const tabNavigator = createBottomTabNavigator({
+//   HomeStack,
+//   LinksStack,
+//   SettingsStack,
+// });
 
-tabNavigator.path = '';
+// tabNavigator.path = '';
 
-export default tabNavigator;
+export default HomeStack;
