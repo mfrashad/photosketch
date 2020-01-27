@@ -9,8 +9,6 @@ import Goal from './Goal';
 import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
-import SampleMap from '../constants/SampleMap';
-import { enumBooleanBody } from '@babel/types';
 
 console.log(Constants.MAX_WIDTH, Constants.MAX_HEIGHT);
 const pixelRatio = Constants.MAX_HEIGHT/570;
@@ -30,7 +28,7 @@ export default class Game extends Component {
         this.entities = this.setupWorld();
     }
 
-    setupWorld = () => {
+    setupWorld = async () => {
       let engine = Matter.Engine.create({ enableSleeping: true });
       engine.timing.timeScale = 0.5;
       let world = engine.world;
@@ -38,7 +36,9 @@ export default class Game extends Component {
       let coins = [];
       let player = null;
       let entities = {physics: { engine: engine, world: world }};
-      const map = SampleMap.mapdata;
+      const gameResponse = await fetch(this.props.gameURL);
+      const gameData = await gameResponse.json();
+      const map = gameData.mapdata;
       
       for(let i = 0; i < map.length; i+= 1){
         for(let j = 0; j < map[i].length; j+= 1){
@@ -64,7 +64,7 @@ export default class Game extends Component {
         }
       }
 
-      const coinsData = SampleMap.Coin_BBs
+      const coinsData = gameData.Coin_BBs
       coinsData.forEach((c, i) => {
         const w = c[2] * pixelRatio;
         const h = c[3] * pixelRatio;
@@ -145,7 +145,7 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.running &&  <Image source={require('../assets/images/game.jpeg')} style={styles.sketchImage} />}
+        {this.state.running &&  <Image source={{uri: this.props.imageURL}} style={styles.sketchImage} />}
         <GameEngine
           ref={(ref) => { this.gameEngine = ref; }}
           style={styles.gameContainer}
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
       height: Constants.MAX_HEIGHT,
       width: 800 * pixelRatio,
       resizeMode: 'cover',
-      opacity: 0.5,
+      opacity: 1,
       top: 0,
       left: 0,
     },

@@ -136,7 +136,7 @@ export default class ImagePickerScreen extends Component {
         user: this.state.currentUser.uid
       })
       console.log("Saved to firebase");
-      this.props.navigation.navigate('Game', { gameURL })
+      this.props.navigation.navigate('Game', { gameURL, imageURL })
     } catch (e) {
       console.log({ e });
       alert('Upload failed, sorry :(');
