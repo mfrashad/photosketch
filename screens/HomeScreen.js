@@ -11,7 +11,15 @@ const actions = [
     text: "Create New Game",
     icon: (<Ionicons name="md-add" size={30} color="#141414" />),
     name: "imagePicker",
-    position: 1
+    color: '#FFF',
+    position: 2
+  },
+  {
+    text: "Sign Out",
+    icon: (<Ionicons name="md-log-out" size={30} color="#141414" />),
+    name: "signOut",
+    color: '#FFF',
+    position: 1,
   }
 ];
 
@@ -39,6 +47,21 @@ export default class HomeScreen extends React.Component {
   componentDidMount() {
     const { currentUser } = firebase.auth()
     this.setState({ currentUser }, () => this.fetchGames());
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  actionHandler = (name) => {
+    switch(name){
+      case "imagePicker":
+        this.props.navigation.navigate('ImagePicker');
+        break;
+      case "signOut":
+        firebase.auth().signOut().then(() => this.props.navigation.navigate('Login'))
+        break;
+    }
   }
 
   gameHandler = (game, image) => () => {
@@ -87,11 +110,12 @@ export default class HomeScreen extends React.Component {
         />
         <FloatingAction
           actions={actions}
-          onPressItem={(name) => this.props.navigation.navigate('ImagePicker')}
-          overrideWithAction={true}
+          onPressItem={this.actionHandler}
+          floatingIcon={(<Ionicons name="md-menu" size={30} color="#141414" />)}
           color="#FFF"
           shadowStyle={styles.fabShadow}
           fixNativeFeedbackRadius={true}
+          animated
         />
       </SafeAreaView>
     );
