@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import { Constants } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
@@ -29,22 +30,29 @@ export default class ImagePickerScreen extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="default" />
+        <View style={styles.container}>
+          <Ionicons style={styles.googleLogo} name="md-cloud-upload" size={120} color="#141414" />
+          <Text
+            style={styles.exampleText}>
+            Upload your game sketches
+          </Text>
+          {this._maybeRenderImage()}
+          {this._maybeRenderUploadingOverlay()}
+        </View>
+        <View style={styles.buttonsContainer} >
+          <TouchableOpacity
+            onPress={this._pickImage}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Pick an image from gallery</Text>
+          </TouchableOpacity>
 
-        <Text
-          style={styles.exampleText}>
-          Upload your game sketches
-        </Text>
+          <TouchableOpacity style={styles.button} onPress={this._takePhoto}>
+            <Text style={styles.buttonText}>Take a Photo</Text>
+          </TouchableOpacity>
+        </View>
 
-        <Button
-          onPress={this._pickImage}
-          style={styles.button}
-          title="Pick an image from camera roll"
-        />
-
-        <Button onPress={this._takePhoto} title="Take a photo" />
-
-        {this._maybeRenderImage()}
-        {this._maybeRenderUploadingOverlay()}
+        
       </View>
     );
   }
@@ -207,7 +215,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    marginBottom: 10,
+    width: 300,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    borderRadius: 50,
+    marginBottom: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    backgroundColor: '#141414',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#FFFFFF'
+  },
+  buttonsContainer: {
+    marginBottom: 20,
   },
   exampleText: {
     fontSize: 20,
