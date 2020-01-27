@@ -10,9 +10,9 @@
       "web"
     ],
     "version": "1.0.0",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/photosketch-applogo.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/photosketch-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
