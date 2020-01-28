@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import firebase from '../utils/firebase';
 import moment  from 'moment';
+import Layout from '../constants/Layout';
 
 const actions = [
   {
@@ -25,15 +26,22 @@ const actions = [
 ];
 
 
-function Item({ title, game, image, description, createdAt, onPress }) {
+function Item({ title, game, image, description, createdAt, onPress, onDelete }) {
   createdAt = moment(createdAt.toDate())
   return (
-    <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
-      <Image style={styles.itemImage} source={{ uri: image }} />
-      <Text style={{fontSize: 24}}>{title}</Text>
-      <Text style={{fontSize: 14, color: "#818181"}}>Created {createdAt.fromNow()}</Text>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={onPress}>
+        <Image style={styles.itemImage} source={{ uri: image }} />
+      </TouchableOpacity>
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1}}>
+          <Text style={{fontSize: 24}}>{title}</Text>
+          <Text style={{fontSize: 14, color: "#818181"}}>Created {createdAt.fromNow()}</Text>
+        </View>
+        <Ionicons onPress={onDelete} name="md-trash" size={32} color="#141414" style={{marginTop: 5, marginHorizontal: 10}} />
+      </View>
       {/* <Text style={{fontSize: 16}}>{description}</Text> */}
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -71,6 +79,10 @@ export default class HomeScreen extends React.Component {
     console.log("handler", game);
     this.props.navigation.navigate('Game', { gameURL: game, imageURL: image })
   }
+
+  deleteGame = (id) => () => {
+    firebase.firestore().collection('games').doc(id).delete();
+  }
   
   fetchGames = () => {
     this.unsubscribe = firebase.firestore().collection('games')
@@ -94,8 +106,16 @@ export default class HomeScreen extends React.Component {
               //console.log("Removed city: ", change.doc.data());
           }
       });
+      if(this.state.games.length == 0) this.props.navigation.navigate('ImagePicker');
     })
   }
+
+  _emptyList = () => (
+    <View style={[styles.loadingContainer, {height: 400, paddingHorizontal: 20}]}>
+      <Text style={{fontSize: 16, textAlign: 'center'}}>You do not have any games :(</Text>
+      <Text style={{fontSize: 16, textAlign: 'center'}}>Create a new game using the action button on bottom right</Text>
+    </View>
+  )
 
   render() {
     return this.state.isLoading? (
@@ -104,12 +124,13 @@ export default class HomeScreen extends React.Component {
       </View>
     ) : (
       <SafeAreaView style={styles.container}>
-        
         <FlatList
           data={this.state.games}
+          ListEmptyComponent={this._emptyList}
           ListHeaderComponent={<Text style={styles.title}> My Games </Text>}
-          renderItem={({ item }) => <Item {...item} onPress={this.gameHandler(item.game, item.image)} />}
+          renderItem={({ item }) => <Item {...item} onPress={this.gameHandler(item.game, item.image)} onDelete={this.deleteGame(item.id)} />}
           keyExtractor={item => item.id}
+          contentContainerStyle={styles.gameList}
         />
         <FloatingAction
           actions={actions}
@@ -163,6 +184,9 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  gameList: {
+    paddingBottom: 40,
   },
 
   title: {
