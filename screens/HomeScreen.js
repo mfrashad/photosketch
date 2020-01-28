@@ -106,7 +106,6 @@ export default class HomeScreen extends React.Component {
               //console.log("Removed city: ", change.doc.data());
           }
       });
-      if(this.state.games.length == 0) this.props.navigation.navigate('ImagePicker');
     })
   }
 
