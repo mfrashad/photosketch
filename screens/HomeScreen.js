@@ -5,6 +5,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import firebase from '../utils/firebase';
+import moment  from 'moment';
 
 const actions = [
   {
@@ -24,12 +25,14 @@ const actions = [
 ];
 
 
-function Item({ title, game, image, description, onPress }) {
-  console.log(image);
+function Item({ title, game, image, description, createdAt, onPress }) {
+  createdAt = moment(createdAt.toDate())
   return (
     <TouchableOpacity onPress={onPress} style={styles.itemContainer}>
       <Image style={styles.itemImage} source={{ uri: image }} />
-      <Text style={styles.itemTitle}>{title}</Text>
+      <Text style={{fontSize: 24}}>{title}</Text>
+      <Text style={{fontSize: 14, color: "#818181"}}>Created {createdAt.fromNow()}</Text>
+      {/* <Text style={{fontSize: 16}}>{description}</Text> */}
     </TouchableOpacity>
   );
 }
@@ -72,7 +75,7 @@ export default class HomeScreen extends React.Component {
   fetchGames = () => {
     this.unsubscribe = firebase.firestore().collection('games')
     .where("user", "==", this.state.currentUser.uid)
-    .orderBy('createdAt', 'desc')
+    .orderBy('createdAt', 'asc')
     .onSnapshot(snapshot => {
       if(snapshot.empty) {
         this.setState({isLoading: false})
@@ -82,7 +85,7 @@ export default class HomeScreen extends React.Component {
               console.log('exist')
               let game = change.doc.data();
               game['id'] = change.doc.id
-              this.setState({games: [...this.state.games, game], isLoading: false});
+              this.setState({games: [game, ...this.state.games], isLoading: false});
           }
           if (change.type === "modified") {
               //console.log("Modified city: ", change.doc.data());
