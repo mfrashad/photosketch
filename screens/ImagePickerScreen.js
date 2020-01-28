@@ -30,6 +30,12 @@ export default class ImagePickerScreen extends Component {
             style={styles.exampleText}>
             Upload your game sketches
           </Text>
+          <Text style={{marginBottom: 10, marginHorizontal: 10, textAlign: 'center'}}>Follow the following color code for your sketch:</Text>
+          <Text>Black: Starting Point</Text>
+          <Text>Green: Ending Point</Text>
+          <Text>Red: Static Enemy</Text>
+          <Text>Blue: Platform/Wall</Text>
+          <Text>Yellow: Coin/Point</Text>
         </View>
         <View style={styles.buttonsContainer} >
           <TouchableOpacity
