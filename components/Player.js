@@ -35,6 +35,7 @@ export default (world, x, y) => {
       label: "player",
       density: 0.01,
       restitution: 0,
+      slop: 0.3,
       friction: 1,
       frictionStatic: 200,
       frictionAir: 0,

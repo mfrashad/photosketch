@@ -5,6 +5,8 @@ const height = Dimensions.get("screen").height;
 export default Constants = {
     MAX_WIDTH: Math.max(width, height),
     MAX_HEIGHT: Math.min(width, height),
+    IMAGE_WIDTH: 800,
+    IMAGE_HEIGHT: 570,
     JUMP_BUTTON_RADIUS: 75,
     JUMP_BUTTON_RIGHT: 30,
     JUMP_BUTTON_BOTTOM: 30,

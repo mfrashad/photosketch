@@ -10,8 +10,11 @@ import Constants from '../constants/Constants';
 import Physics from './Physics';
 import Wall from './Wall';
 
-console.log(Constants.MAX_WIDTH, Constants.MAX_HEIGHT);
-const pixelRatio = Constants.MAX_HEIGHT/570;
+const {MAX_HEIGHT, MAX_WIDTH, IMAGE_WIDTH, IMAGE_HEIGHT} = Constants
+
+console.log(MAX_WIDTH, MAX_HEIGHT);
+const pixelRatio = (MAX_HEIGHT/IMAGE_HEIGHT);
+console.log(pixelRatio);
 
 
 export default class Game extends Component {
@@ -43,19 +46,22 @@ export default class Game extends Component {
       for(let i = 0; i < map.length; i+= 1){
         for(let j = 0; j < map[i].length; j+= 1){
           const c = parseInt(map[i][j]);
+          const x = j*pixelRatio;
+          const y = (i) * pixelRatio * 1.03;
+          
           if(c === 1){
-            const wall = Wall(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+            const wall = Wall(world, x, y, pixelRatio * 5, pixelRatio * 5);
             // walls.push(wall);
             // entities[wall.id] = wall;
           } else if (c === 3){
-            Enemy(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+            Enemy(world, x, y, pixelRatio * 5, pixelRatio * 5);
           } else if (c === 2){
-            const goal = Goal(world, j * pixelRatio, i * pixelRatio, pixelRatio * 5, pixelRatio * 5);
+            const goal = Goal(world, x, y , pixelRatio * 5, pixelRatio * 5);
             // entities[`${i}${j}`] = goal;
           }
           else if (c === 6){
             if(!player){
-              player = Player( world, j*pixelRatio + 100, i*pixelRatio);
+              player = Player( world, x + 100, y);
               // let goal = Goal(world, j*pixelRatio + 300, i*pixelRatio, 20, 20);
               // entities.goal = goal;
               entities.player = player;
@@ -75,14 +81,14 @@ export default class Game extends Component {
       })
 
       
-      // let player = Player( world, Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2);
-      // let enemy = Enemy(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT / 3, 40, 40);
-      // let coin = Coin(world, Constants.MAX_WIDTH / 4 * 2, Constants.MAX_HEIGHT - 75, 40, 40)
-      // let goal = Goal(world, Constants.MAX_WIDTH / 4 * 3, Constants.MAX_HEIGHT - 75, 40, 40)
-      let floor = Wall(world, Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 5, Constants.MAX_WIDTH, 10);
-      let ceiling = Wall(world, Constants.MAX_WIDTH / 2, 5, Constants.MAX_WIDTH, 10);
-      let lWall = Wall(world, 5, Constants.MAX_HEIGHT/2, 10, Constants.MAX_HEIGHT - 5);
-      let rWall = Wall(world, Constants.MAX_WIDTH - 5, Constants.MAX_HEIGHT/2, 10, Constants.MAX_HEIGHT - 5);
+      // let player = Player( world, MAX_WIDTH / 4, MAX_HEIGHT / 2);
+      // let enemy = Enemy(world, MAX_WIDTH / 4 * 2, MAX_HEIGHT / 3, 40, 40);
+      // let coin = Coin(world, MAX_WIDTH / 4 * 2, MAX_HEIGHT - 75, 40, 40)
+      // let goal = Goal(world, MAX_WIDTH / 4 * 3, MAX_HEIGHT - 75, 40, 40)
+      let floor = Wall(world, MAX_WIDTH / 2, MAX_HEIGHT - 5, MAX_WIDTH, 10);
+      let ceiling = Wall(world, MAX_WIDTH / 2, 5, MAX_WIDTH, 10);
+      let lWall = Wall(world, 5, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
+      let rWall = Wall(world, MAX_WIDTH - 5, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
 
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;
@@ -145,7 +151,7 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.running &&  <Image source={{uri: this.props.imageURL}} style={styles.sketchImage} />}
+        <Image source={{uri: this.props.imageURL}} style={styles.sketchImage} />
         <GameEngine
           ref={(ref) => { this.gameEngine = ref; }}
           style={styles.gameContainer}
@@ -179,14 +185,14 @@ export default class Game extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#adadad',
     },
     sketchImage: {
       position: 'absolute',
-      height: Constants.MAX_HEIGHT,
-      width: 800 * pixelRatio,
+      height: MAX_HEIGHT,
+      width: IMAGE_WIDTH * pixelRatio,
       resizeMode: 'cover',
-      opacity: 1,
+      opacity: 0.8,
       top: 0,
       left: 0,
     },
