@@ -30,6 +30,7 @@ export default (world, x, y , width, height) => {
   let body = Matter.Bodies.rectangle(x, y, width, height, {
     label: "wall",
     isStatic: true,
+    density: 0.1,
     friction: 1,
     frictionStatic: 200,
     restitution: 0,

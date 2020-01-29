@@ -33,6 +33,7 @@ export default (world, x, y) => {
   let height = 20;
   let body = Matter.Bodies.rectangle(x, y, width, height, {
       label: "player",
+
       density: 0.01,
       restitution: 0,
       slop: 0.3,
