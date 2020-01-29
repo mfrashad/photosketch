@@ -27,11 +27,18 @@ export default class Game extends Component {
         };
 
         this.gameEngine = null;
+        this.gameData = null;
 
         this.entities = this.setupWorld();
     }
 
     setupWorld = async () => {
+      const gameResponse = await fetch(this.props.gameURL);
+      this.gameData = await gameResponse.json();
+      return this.resetWorld()
+    }
+
+    resetWorld = () => {
       let engine = Matter.Engine.create({ enableSleeping: true });
       engine.timing.timeScale = 0.5;
       let world = engine.world;
@@ -39,9 +46,8 @@ export default class Game extends Component {
       let coins = [];
       let player = null;
       let entities = {physics: { engine: engine, world: world }};
-      const gameResponse = await fetch(this.props.gameURL);
-      const gameData = await gameResponse.json();
-      const map = gameData.mapdata;
+      
+      const map = this.gameData.mapdata;
       
       for(let i = 0; i < map.length; i+= 1){
         for(let j = 0; j < map[i].length; j+= 1){
@@ -70,7 +76,7 @@ export default class Game extends Component {
         }
       }
 
-      const coinsData = gameData.Coin_BBs
+      const coinsData = this.gameData.Coin_BBs
       coinsData.forEach((c, i) => {
         const w = c[2] * pixelRatio;
         const h = c[3] * pixelRatio;
@@ -85,10 +91,10 @@ export default class Game extends Component {
       // let enemy = Enemy(world, MAX_WIDTH / 4 * 2, MAX_HEIGHT / 3, 40, 40);
       // let coin = Coin(world, MAX_WIDTH / 4 * 2, MAX_HEIGHT - 75, 40, 40)
       // let goal = Goal(world, MAX_WIDTH / 4 * 3, MAX_HEIGHT - 75, 40, 40)
-      let floor = Wall(world, MAX_WIDTH / 2, MAX_HEIGHT - 5, MAX_WIDTH, 10);
-      let ceiling = Wall(world, MAX_WIDTH / 2, 5, MAX_WIDTH, 10);
-      let lWall = Wall(world, 5, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
-      let rWall = Wall(world, MAX_WIDTH - 5, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
+      let floor = Enemy(world, MAX_WIDTH / 2, MAX_HEIGHT + 40, MAX_WIDTH * 2, 30);
+      // let ceiling = Wall(world, MAX_WIDTH / 2, 5, MAX_WIDTH, 10);
+      let lWall = Wall(world, -10, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
+      let rWall = Wall(world, MAX_WIDTH + 10, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
 
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;
@@ -134,7 +140,7 @@ export default class Game extends Component {
   }
 
   reset = () => {
-    this.gameEngine.swap(this.setupWorld());
+    this.gameEngine.swap(this.resetWorld());
     this.setState({
       running: true,
       win: false
