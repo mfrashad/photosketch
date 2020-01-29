@@ -244,9 +244,9 @@ const styles = StyleSheet.create({
     fullScreen: {
       position: 'absolute',
       top: 0,
-      bottom: 0,
+      height: MAX_HEIGHT,
       left: 0,
-      right: 0,
+      width: MAX_WIDTH,
       opacity: 0.8,
       backgroundColor: '#aaa',
       justifyContent: 'center',
