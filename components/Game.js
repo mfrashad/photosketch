@@ -93,8 +93,8 @@ export default class Game extends Component {
       // let goal = Goal(world, MAX_WIDTH / 4 * 3, MAX_HEIGHT - 75, 40, 40)
       let floor = Enemy(world, MAX_WIDTH / 2, MAX_HEIGHT + 40, MAX_WIDTH * 2, 30);
       // let ceiling = Wall(world, MAX_WIDTH / 2, 5, MAX_WIDTH, 10);
-      let lWall = Wall(world, -10, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
-      let rWall = Wall(world, MAX_WIDTH + 10, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
+      let lWall = Wall(world, -30, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
+      let rWall = Wall(world, MAX_WIDTH + 30, MAX_HEIGHT/2, 10, MAX_HEIGHT - 5);
 
       Matter.Events.on(engine, 'collisionStart', (event) => {
           let pairs = event.pairs;
