@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.photosketch.photosketch",
+      "supportsTablet": true,
+    },
+    "android": {
+      "package": "com.photosketch.photosketch"
     }
   }
 }
