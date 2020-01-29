@@ -76,6 +76,13 @@ export default class Game extends Component {
         }
       }
 
+      if(!player){
+        player = Player( world, 100, 100);
+        // let goal = Goal(world, j*pixelRatio + 300, i*pixelRatio, 20, 20);
+        // entities.goal = goal;
+        entities.player = player;
+      }
+
       const coinsData = this.gameData.Coin_BBs
       coinsData.forEach((c, i) => {
         const w = c[2] * pixelRatio;
