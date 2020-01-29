@@ -104,6 +104,9 @@ export default class HomeScreen extends React.Component {
           }
           if (change.type === "removed") {
               //console.log("Removed city: ", change.doc.data());
+              let id = change.doc.id;
+              this.setState({games: this.state.games.filter(game => game.id !== id)})
+
           }
       });
     })
