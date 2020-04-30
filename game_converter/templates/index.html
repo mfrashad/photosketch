@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title>akinjury</title>
+		<link rel="icon" href="{{url_for('static', filename='img/favicon.ico')}}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"/>
+		<script src="{{url_for('static', filename='script.js')}}"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<div style="width: 70vw;margin: auto;padding: 20px;">
+			<h1>Upload game tester</h1>
+			
+			<form action="/upload_image" id="upload" method="POST" enctype="multipart/form-data">
+				<span>Upload an Image: </span><input type="file" name="file" required><br><br>
+				<input type="submit" value="&#x2191 Upload Attatched Image">
+			</form>
+		</div>
+	</body>
+</html>
