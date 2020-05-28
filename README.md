@@ -24,6 +24,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+[![IMAGE ALT TEXT](/photosetch-preview.PNG)](http://www.youtube.com/watch?v=pagzgSer6kg)
+
 An app that generates a 2D platform game based on a given hand-drawn sketch.
 
 ### Built With
